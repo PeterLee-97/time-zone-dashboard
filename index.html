@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="TimeBridge converts your available time into another country’s local time." />
+  <title>TimeBridge — Availability Time Converter</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="./" aria-label="TimeBridge home">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>TimeBridge</span>
+      </a>
+      <div class="top-actions">
+        <select id="languageSelect" class="control control-small" aria-label="Language">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+        </select>
+        <button id="swapBtn" class="button button-ghost" type="button" data-i18n="swap">서로 바꾸기</button>
+      </div>
+    </nav>
+
+    <section class="hero-grid">
+      <header class="hero-copy">
+        <p class="eyebrow" data-i18n="eyebrow">TIME ZONE ATLAS</p>
+        <h1 data-i18n="title">내 가능 시간을 넣으면 상대방 시간이 바로 보입니다.</h1>
+        <div class="hero-rule" aria-hidden="true"></div>
+      </header>
+
+      <section class="converter" aria-labelledby="converterTitle">
+        <div class="converter-head">
+          <div>
+            <p class="section-label" data-i18n="mainKicker">Quick Convert</p>
+            <h2 id="converterTitle" data-i18n="mainTitle">가능 시간 입력</h2>
+          </div>
+          <button id="setTodayBtn" class="button button-primary" type="button" data-i18n="today">오늘</button>
+        </div>
+
+        <div class="timezone-grid">
+          <label class="field">
+            <span data-i18n="myZone">내 시간대</span>
+            <select id="homeZone" class="control"></select>
+          </label>
+          <div class="direction-token" aria-hidden="true">→</div>
+          <label class="field">
+            <span data-i18n="theirZone">상대 시간대</span>
+            <select id="targetZone" class="control"></select>
+          </label>
+        </div>
+
+        <div class="availability-grid">
+          <label class="field date-field">
+            <span data-i18n="date">날짜</span>
+            <input id="availableDate" class="control" type="date" />
+          </label>
+          <label class="field">
+            <span data-i18n="from">시작</span>
+            <input id="availableStart" class="control time-control" type="time" value="20:00" />
+          </label>
+          <label class="field">
+            <span data-i18n="to">종료</span>
+            <input id="availableEnd" class="control time-control" type="time" value="23:00" />
+          </label>
+        </div>
+
+        <div class="result-grid">
+          <article class="result-card source-result">
+            <span data-i18n="yourAvailableTime">내 가능 시간</span>
+            <strong id="homeWindow">--</strong>
+            <small id="homeLabel">Asia/Seoul</small>
+          </article>
+
+          <div class="diff-card" aria-live="polite">
+            <span data-i18n="timeDiff">시차</span>
+            <strong id="diffText">--</strong>
+          </div>
+
+          <article class="result-card target-result">
+            <span data-i18n="theirLocalTime">상대방 현지 시간</span>
+            <strong id="targetWindow">--</strong>
+            <small id="targetLabel">America/New_York</small>
+          </article>
+        </div>
+
+        <section class="timeline-panel" aria-labelledby="timelineTitle">
+          <div class="timeline-head">
+            <div>
+              <p class="section-label" data-i18n="timelineKicker">Visual Timeline</p>
+              <h3 id="timelineTitle" data-i18n="timelineTitle">24시간 타임라인</h3>
+            </div>
+            <p data-i18n="timelineDesc">색칠된 구간이 내가 입력한 가능 시간입니다.</p>
+          </div>
+
+          <div class="timeline-scale" aria-hidden="true">
+            <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-label">
+              <span data-i18n="homeTimeline">내 시간</span>
+              <strong id="timelineHomeZone">--</strong>
+            </div>
+            <div class="timeline-track" id="homeTimelineTrack" aria-hidden="true"></div>
+          </div>
+
+          <div class="timeline-row target-row">
+            <div class="timeline-label">
+              <span data-i18n="targetTimeline">상대 시간</span>
+              <strong id="timelineTargetZone">--</strong>
+            </div>
+            <div class="timeline-track" id="targetTimelineTrack" aria-hidden="true"></div>
+          </div>
+
+          <div class="timeline-target-labels" id="targetTimelineLabels" aria-hidden="true"></div>
+        </section>
+      </section>
+    </section>
+
+    <section class="utility-strip" aria-label="Live time and presets">
+      <article class="live-readout">
+        <span data-i18n="now">지금</span>
+        <strong id="homeClock">--:--</strong>
+        <em id="targetClock">--:--</em>
+      </article>
+      <div class="preset-row">
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/New_York">Seoul ↔ New York</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Europe/London">Seoul ↔ London</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Asia/Shanghai">Seoul ↔ Shanghai</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/Los_Angeles">Seoul ↔ LA</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
