@@ -3,21 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A polished multilingual time-zone dashboard for friends, couples, and global teams." />
-  <title>TimeBridge — Time Zone Dashboard</title>
+  <meta name="description" content="TimeBridge helps you convert your available time into another country’s local time." />
+  <title>TimeBridge — Availability Time Converter</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
-  <main class="app-shell">
-    <nav class="topbar" aria-label="Primary">
-      <a class="brand" href="#">
-        <span class="brand-mark">TB</span>
+  <main class="stage">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="./" aria-label="TimeBridge home">
+        <span class="brand-cube"><i></i></span>
         <span>TimeBridge</span>
       </a>
-      <div class="nav-actions">
-        <select id="languageSelect" class="select compact" aria-label="Language">
+      <div class="top-actions">
+        <select id="languageSelect" class="control small" aria-label="Language">
           <option value="ko">한국어</option>
           <option value="en">English</option>
           <option value="zh">中文</option>
@@ -26,145 +24,86 @@
       </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero-shell">
       <div class="hero-copy">
-        <div class="eyebrow" data-i18n="eyebrow">Long distance, global work, better timing.</div>
-        <h1 data-i18n="title">내 시간과 상대방 시간을 한눈에 비교하세요.</h1>
-        <p data-i18n="subtitle">연애, 해외 친구, 글로벌 팀 미팅까지. 내가 가능한 시간을 입력하면 상대 나라에서는 몇 시인지 바로 보여줍니다.</p>
+        <p class="eyebrow" data-i18n="eyebrow">TIME ZONE CONVERTER</p>
+        <h1 data-i18n="title">내 가능 시간을 넣으면 상대방 시간이 바로 보입니다.</h1>
       </div>
-      <div class="hero-card glass-card">
-        <span class="status-dot"></span>
-        <div>
-          <strong data-i18n="liveComparison">Live comparison</strong>
-          <p data-i18n="liveComparisonDesc">현재 시간이 자동으로 업데이트됩니다.</p>
-        </div>
-      </div>
-    </section>
 
-    <section class="control-grid">
-      <article class="panel setup-panel">
-        <div class="panel-heading">
-          <span class="step-pill">01</span>
+      <section class="converter-card" aria-labelledby="converterTitle">
+        <div class="card-topline">
           <div>
-            <h2 data-i18n="chooseZones">시간대 선택</h2>
-            <p data-i18n="chooseZonesDesc">내 위치와 상대방 위치를 선택하세요.</p>
+            <p class="kicker" data-i18n="mainKicker">Quick Convert</p>
+            <h2 id="converterTitle" data-i18n="mainTitle">가능 시간 입력</h2>
           </div>
+          <button id="setTodayBtn" class="button soft" type="button" data-i18n="today">오늘</button>
         </div>
-        <div class="fields two-col">
+
+        <div class="zone-row">
           <label class="field">
             <span data-i18n="myZone">내 시간대</span>
-            <select id="homeZone" class="select"></select>
+            <select id="homeZone" class="control"></select>
           </label>
+          <div class="arrow-orb" aria-hidden="true">→</div>
           <label class="field">
             <span data-i18n="theirZone">상대 시간대</span>
-            <select id="targetZone" class="select"></select>
+            <select id="targetZone" class="control"></select>
           </label>
         </div>
-        <div class="preset-row" aria-label="Presets">
-          <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/New_York">Seoul ↔ New York</button>
-          <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Europe/London">Seoul ↔ London</button>
-          <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Asia/Shanghai">Seoul ↔ Shanghai</button>
-          <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/Los_Angeles">Seoul ↔ LA</button>
-        </div>
-      </article>
 
-      <article class="panel now-panel">
-        <div class="panel-heading compact-heading">
-          <span class="step-pill">02</span>
-          <h2 data-i18n="rightNow">지금 시간</h2>
-        </div>
-        <div class="clock-grid">
-          <div class="clock-card primary-clock">
-            <span class="clock-label" id="homeLabel">Seoul</span>
-            <strong id="homeClock">--:--</strong>
-            <small id="homeDate">--</small>
-          </div>
-          <div class="clock-card">
-            <span class="clock-label" id="targetLabel">New York</span>
-            <strong id="targetClock">--:--</strong>
-            <small id="targetDate">--</small>
-          </div>
-        </div>
-        <div class="difference-strip">
-          <span data-i18n="timeDiff">시차</span>
-          <strong id="diffText">--</strong>
-        </div>
-      </article>
-    </section>
-
-    <section class="dashboard-grid">
-      <article class="panel converter-panel">
-        <div class="panel-heading">
-          <span class="step-pill">03</span>
-          <div>
-            <h2 data-i18n="convertSpecific">특정 시간 변환</h2>
-            <p data-i18n="convertSpecificDesc">내 날짜와 시간을 입력하면 상대방 현지 시간을 계산합니다.</p>
-          </div>
-        </div>
-        <div class="fields inline-fields">
-          <label class="field">
-            <span data-i18n="myDateTime">내 날짜/시간</span>
-            <input id="localDateTime" class="input" type="datetime-local" />
-          </label>
-          <button id="setNowBtn" class="button secondary" type="button" data-i18n="useNow">지금으로 설정</button>
-        </div>
-        <div class="result-card">
-          <span data-i18n="theirTimeWillBe">상대방 시간</span>
-          <strong id="convertedTime">--</strong>
-          <small id="convertedMeta">--</small>
-        </div>
-      </article>
-
-      <article class="panel availability-panel">
-        <div class="panel-heading">
-          <span class="step-pill">04</span>
-          <div>
-            <h2 data-i18n="availability">가능 시간대</h2>
-            <p data-i18n="availabilityDesc">내가 가능한 시간을 넣고 상대방에게 몇 시인지 확인하세요.</p>
-          </div>
-        </div>
-        <div class="fields availability-fields">
-          <label class="field">
+        <div class="time-input-row">
+          <label class="field date-field">
             <span data-i18n="date">날짜</span>
-            <input id="availableDate" class="input" type="date" />
+            <input id="availableDate" class="control" type="date" />
           </label>
           <label class="field">
             <span data-i18n="from">시작</span>
-            <input id="availableStart" class="input" type="time" value="20:00" />
+            <input id="availableStart" class="control time-control" type="time" value="20:00" />
           </label>
           <label class="field">
             <span data-i18n="to">종료</span>
-            <input id="availableEnd" class="input" type="time" value="23:00" />
+            <input id="availableEnd" class="control time-control" type="time" value="23:00" />
           </label>
         </div>
-        <div class="availability-result">
-          <div>
-            <span data-i18n="youAreFree">내 가능 시간</span>
+
+        <div class="result-stage">
+          <article class="time-block home-block">
+            <span data-i18n="yourAvailableTime">내 가능 시간</span>
             <strong id="homeWindow">--</strong>
+            <small id="homeLabel">Asia/Seoul</small>
+          </article>
+
+          <div class="time-disc" aria-hidden="true">
+            <div class="disc-face">
+              <span id="diffText">--</span>
+              <em data-i18n="timeDiff">시차</em>
+            </div>
           </div>
-          <div>
-            <span data-i18n="theySee">상대방에게는</span>
+
+          <article class="time-block target-block">
+            <span data-i18n="theirLocalTime">상대방 현지 시간</span>
             <strong id="targetWindow">--</strong>
-          </div>
+            <small id="targetLabel">America/New_York</small>
+          </article>
         </div>
-      </article>
+      </section>
     </section>
 
-    <section class="insights-grid">
-      <article class="mini-panel">
-        <span data-i18n="relationshipUse">장거리 연애</span>
-        <strong id="relationshipTip">--</strong>
+    <section class="bottom-strip" aria-label="Live time and presets">
+      <article class="live-pill">
+        <span data-i18n="now">지금</span>
+        <strong id="homeClock">--:--</strong>
+        <em id="targetClock">--:--</em>
       </article>
-      <article class="mini-panel">
-        <span data-i18n="workUse">글로벌 업무</span>
-        <strong id="workTip">--</strong>
-      </article>
-      <article class="mini-panel">
-        <span data-i18n="friendUse">해외 친구</span>
-        <strong id="friendTip">--</strong>
-      </article>
+      <div class="preset-row">
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/New_York">Seoul ↔ New York</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Europe/London">Seoul ↔ London</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="Asia/Shanghai">Seoul ↔ Shanghai</button>
+        <button class="chip" type="button" data-preset-home="Asia/Seoul" data-preset-target="America/Los_Angeles">Seoul ↔ LA</button>
+      </div>
     </section>
   </main>
+
   <script src="./script.js"></script>
 </body>
 </html>
