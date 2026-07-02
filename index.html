@@ -85,6 +85,38 @@
             <small id="targetLabel">America/New_York</small>
           </article>
         </div>
+
+        <section class="timeline-panel" aria-labelledby="timelineTitle">
+          <div class="timeline-head">
+            <div>
+              <p class="section-label" data-i18n="timelineKicker">Visual Timeline</p>
+              <h3 id="timelineTitle" data-i18n="timelineTitle">24시간 타임라인</h3>
+            </div>
+            <p data-i18n="timelineDesc">색칠된 구간이 내가 입력한 가능 시간입니다.</p>
+          </div>
+
+          <div class="timeline-scale" aria-hidden="true">
+            <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-label">
+              <span data-i18n="homeTimeline">내 시간</span>
+              <strong id="timelineHomeZone">--</strong>
+            </div>
+            <div class="timeline-track" id="homeTimelineTrack" aria-hidden="true"></div>
+          </div>
+
+          <div class="timeline-row target-row">
+            <div class="timeline-label">
+              <span data-i18n="targetTimeline">상대 시간</span>
+              <strong id="timelineTargetZone">--</strong>
+            </div>
+            <div class="timeline-track" id="targetTimelineTrack" aria-hidden="true"></div>
+          </div>
+
+          <div class="timeline-target-labels" id="targetTimelineLabels" aria-hidden="true"></div>
+        </section>
       </section>
     </section>
 

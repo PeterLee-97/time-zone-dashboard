@@ -24,19 +24,22 @@ const i18n = {
     swap: '서로 바꾸기', eyebrow: 'TIME ZONE CONVERTER', title: '내 가능 시간을 넣으면 상대방 시간이 바로 보입니다.',
     mainKicker: 'Quick Convert', mainTitle: '가능 시간 입력', today: '오늘', myZone: '내 시간대', theirZone: '상대 시간대',
     date: '날짜', from: '시작', to: '종료', yourAvailableTime: '내 가능 시간', theirLocalTime: '상대방 현지 시간', timeDiff: '시차', now: '지금',
-    ahead: '{hours}시간 빠름', behind: '{hours}시간 느림', sameTime: '같은 시간대'
+    ahead: '{hours}시간 빠름', behind: '{hours}시간 느림', sameTime: '같은 시간대',
+    timelineKicker: 'Visual Timeline', timelineTitle: '24시간 타임라인', timelineDesc: '색칠된 구간이 내가 입력한 가능 시간입니다.', homeTimeline: '내 시간', targetTimeline: '상대 시간'
   },
   en: {
     swap: 'Swap', eyebrow: 'TIME ZONE CONVERTER', title: 'Enter your free time. See theirs instantly.',
     mainKicker: 'Quick Convert', mainTitle: 'Availability', today: 'Today', myZone: 'My time zone', theirZone: 'Their time zone',
     date: 'Date', from: 'From', to: 'To', yourAvailableTime: 'Your free time', theirLocalTime: 'Their local time', timeDiff: 'Difference', now: 'Now',
-    ahead: '{hours}h ahead', behind: '{hours}h behind', sameTime: 'Same zone'
+    ahead: '{hours}h ahead', behind: '{hours}h behind', sameTime: 'Same zone',
+    timelineKicker: 'Visual Timeline', timelineTitle: '24-hour timeline', timelineDesc: 'The highlighted block is your available window.', homeTimeline: 'My time', targetTimeline: 'Their time'
   },
   zh: {
     swap: '互换', eyebrow: 'TIME ZONE CONVERTER', title: '输入你的可用时间，马上看到对方时间。',
     mainKicker: 'Quick Convert', mainTitle: '可用时间', today: '今天', myZone: '我的时区', theirZone: '对方时区',
     date: '日期', from: '开始', to: '结束', yourAvailableTime: '我的可用时间', theirLocalTime: '对方当地时间', timeDiff: '时差', now: '现在',
-    ahead: '快 {hours} 小时', behind: '慢 {hours} 小时', sameTime: '同一时区'
+    ahead: '快 {hours} 小时', behind: '慢 {hours} 小时', sameTime: '同一时区',
+    timelineKicker: 'Visual Timeline', timelineTitle: '24小时轴', timelineDesc: '高亮区间是你输入的可用时间。', homeTimeline: '我的时间', targetTimeline: '对方时间'
   }
 };
 
@@ -133,6 +136,51 @@ function updateAvailability() {
   $('targetWindow').textContent = formatWindow(startDate, endDate, target);
   $('homeLabel').textContent = labelFor(home);
   $('targetLabel').textContent = labelFor(target);
+  updateTimeline(date, start, end, home, target);
+}
+
+function minutesFromTime(time) {
+  const [h, m] = time.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function makeTimelineTrack(startMin, endMin) {
+  const ticks = Array.from({ length: 25 }, (_, hour) => `<i style="left:${(hour / 24) * 100}%"></i>`).join('');
+  let normalizedEnd = endMin <= startMin ? endMin + 1440 : endMin;
+  const ranges = [];
+  if (normalizedEnd <= 1440) {
+    ranges.push([startMin, normalizedEnd]);
+  } else {
+    ranges.push([startMin, 1440], [0, normalizedEnd - 1440]);
+  }
+  const blocks = ranges.map(([a, b]) => {
+    const left = (a / 1440) * 100;
+    const width = Math.max(((b - a) / 1440) * 100, 0.6);
+    return `<b class="timeline-window" style="left:${left}%;width:${width}%"></b>`;
+  }).join('');
+  return `${ticks}${blocks}`;
+}
+
+function updateTimeline(date, start, end, home, target) {
+  const startMin = minutesFromTime(start);
+  const endMin = minutesFromTime(end);
+  const homeTrack = $('homeTimelineTrack');
+  const targetTrack = $('targetTimelineTrack');
+  if (!homeTrack || !targetTrack) return;
+
+  homeTrack.innerHTML = makeTimelineTrack(startMin, endMin);
+  targetTrack.innerHTML = makeTimelineTrack(startMin, endMin);
+  $('timelineHomeZone').textContent = labelFor(home);
+  $('timelineTargetZone').textContent = labelFor(target);
+
+  const targetLabels = [0, 6, 12, 18, 24].map((hour) => {
+    const hh = String(hour % 24).padStart(2, '0');
+    let instant = zonedTimeToDate(date, `${hh}:00`, home);
+    if (hour === 24) instant = new Date(instant.getTime() + 24 * 60 * 60 * 1000);
+    const label = fmt(instant, target, { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+    return `<span>${label}</span>`;
+  }).join('');
+  $('targetTimelineLabels').innerHTML = targetLabels;
 }
 
 function updateClocks() {

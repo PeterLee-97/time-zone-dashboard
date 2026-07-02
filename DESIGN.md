@@ -102,6 +102,12 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.lg}"
     padding: "{spacing.lg}"
+  timeline-track:
+    backgroundColor: "{colors.neutral-sunken}"
+    textColor: "{colors.primary}"
+    typography: "{typography.data}"
+    rounded: "{rounded.full}"
+    padding: "{spacing.xs}"
   result-card:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
