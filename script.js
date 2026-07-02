@@ -136,12 +136,17 @@ function updateAvailability() {
   $('targetWindow').textContent = formatWindow(startDate, endDate, target);
   $('homeLabel').textContent = labelFor(home);
   $('targetLabel').textContent = labelFor(target);
-  updateTimeline(date, start, end, home, target);
+  updateTimeline(date, start, end, home, target, startDate, endDate);
 }
 
 function minutesFromTime(time) {
   const [h, m] = time.split(':').map(Number);
   return h * 60 + m;
+}
+
+function minutesInZone(date, timeZone) {
+  const p = partsInZone(date, timeZone);
+  return Number(p.hour) * 60 + Number(p.minute);
 }
 
 function makeTimelineTrack(startMin, endMin) {
@@ -161,15 +166,17 @@ function makeTimelineTrack(startMin, endMin) {
   return `${ticks}${blocks}`;
 }
 
-function updateTimeline(date, start, end, home, target) {
+function updateTimeline(date, start, end, home, target, startDate, endDate) {
   const startMin = minutesFromTime(start);
   const endMin = minutesFromTime(end);
+  const targetStartMin = minutesInZone(startDate, target);
+  const targetEndMin = minutesInZone(endDate, target);
   const homeTrack = $('homeTimelineTrack');
   const targetTrack = $('targetTimelineTrack');
   if (!homeTrack || !targetTrack) return;
 
   homeTrack.innerHTML = makeTimelineTrack(startMin, endMin);
-  targetTrack.innerHTML = makeTimelineTrack(startMin, endMin);
+  targetTrack.innerHTML = makeTimelineTrack(targetStartMin, targetEndMin);
   $('timelineHomeZone').textContent = labelFor(home);
   $('timelineTargetZone').textContent = labelFor(target);
 
